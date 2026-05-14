@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Awesome Dice Roller! — Your Pocket-Sized Dice Bag</title>
+<meta name="description" content="Awesome Dice Roller! is the customizable dice app for board gamers and RPG fans. Roll d4, d6, d8, d10, d12, d20. Pay once, no subscriptions.">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #1a1a2e;
+    background: #fafafa;
+  }
+  .hero {
+    background: linear-gradient(135deg, #6b46c1 0%, #9333ea 50%, #ec4899 100%);
+    color: white;
+    padding: 80px 20px 100px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 40%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+  .hero .tagline {
+    font-size: 1.4rem;
+    margin-bottom: 35px;
+    opacity: 0.95;
+    font-weight: 300;
+  }
+  .dice-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+  .die {
+    width: 60px;
+    height: 60px;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: transform 0.3s, background 0.3s;
+  }
+  .die:hover { transform: translateY(-5px) rotate(15deg); background: rgba(255,255,255,0.25); }
+  .cta-btn {
+    display: inline-block;
+    background: white;
+    color: #6b46c1;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cta-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.25); }
+
+  section { padding: 80px 20px; max-width: 1100px; margin: 0 auto; }
+  section h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 15px;
+    color: #1a1a2e;
+    font-weight: 800;
+  }
+  section .lead {
+    text-align: center;
+    font-size: 1.15rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 50px;
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+  }
+  .feature {
+    background: white;
+    padding: 35px 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 4px solid transparent;
+  }
+  .feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+    border-top-color: #9333ea;
+  }
+  .feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+  }
+  .feature h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+    color: #1a1a2e;
+  }
+  .feature p { color: #555; font-size: 0.98rem; }
+
+  .pricing-banner {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+  }
+  .pricing-banner h2 { color: white; margin-bottom: 15px; }
+  .pricing-banner p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+  .price-tag {
+    display: inline-block;
+    background: linear-gradient(135deg, #9333ea, #ec4899);
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    margin-top: 20px;
+    font-size: 1.1rem;
+  }
+
+  .faq { background: white; }
+  .faq-item {
+    background: #fafafa;
+    padding: 25px 30px;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border-left: 4px solid #9333ea;
+  }
+  .faq-item h3 {
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+    color: #1a1a2e;
+  }
+  .faq-item p { color: #555; }
+
+  .support {
+    background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 100%);
+    text-align: center;
+  }
+  .support-card {
+    background: white;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(107,70,193,0.15);
+  }
+  .support-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  .support-card p { color: #555; margin-bottom: 20px; }
+  .email-link {
+    display: inline-block;
+    background: #6b46c1;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s, transform 0.2s;
+    word-break: break-all;
+  }
+  .email-link:hover { background: #9333ea; transform: translateY(-2px); }
+  .response-note {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #777;
+  }
+
+  footer {
+    background: #1a1a2e;
+    color: #aaa;
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 0.95rem;
+  }
+  footer a { color: #c4b5fd; text-decoration: none; }
+  footer a:hover { color: white; }
+  .footer-links {
+    margin-bottom: 15px;
+  }
+  .footer-links a { margin: 0 12px; }
+
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 2.3rem; }
+    .hero .tagline { font-size: 1.1rem; }
+    section h2 { font-size: 1.9rem; }
+    section { padding: 60px 20px; }
+    .die { width: 50px; height: 50px; font-size: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-content">
+    <h1>Awesome Dice Roller!</h1>
+    <p class="tagline">Your pocket-sized dice bag for board games, RPGs, and beyond.</p>
+    <div class="dice-row">
+      <div class="die">d4</div>
+      <div class="die">d6</div>
+      <div class="die">d8</div>
+      <div class="die">d10</div>
+      <div class="die">d12</div>
+      <div class="die">d20</div>
+    </div>
+    <a href="#" class="cta-btn">Download on the App Store</a>
+  </div>
+</header>
+
+<section>
+  <h2>Roll With Confidence</h2>
+  <p class="lead">Tired of fishing through the dice bag for that one missing d20? Forgot your dice at home on game night? Awesome Dice Roller! delivers fast, fair, and seriously satisfying rolls every time — wherever you are.</p>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🎲</div>
+      <h3>The Full Polyhedral Set</h3>
+      <p>Roll the classics — d4, d6, d8, d10, d12, and d20. All the dice you actually need, none of the ones you don't.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎯</div>
+      <h3>Up to 10 Dice at Once</h3>
+      <p>Mix and match up to ten dice in a single roll. Perfect for big damage moments and sweeping skill checks.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🎨</div>
+      <h3>Custom Colors</h3>
+      <p>Customize the color of every die so your set looks exactly the way you want. Match your character, your party, or just your mood.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📱</div>
+      <h3>Shake to Roll</h3>
+      <p>Pick up your phone, give it a shake, and let the dice fly. Prefer it quieter? A single tap works just as well.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">📜</div>
+      <h3>Throw History</h3>
+      <p>Every roll is saved. Settle disputes, replay legendary moments, or just look back on your luckiest sessions.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">💎</div>
+      <h3>Pay Once, Yours Forever</h3>
+      <p>No subscriptions. No ads. No microtransactions. One simple purchase and updates are included for life.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-banner">
+  <h2>One Price. No Strings.</h2>
+  <p>We believe great apps shouldn't come with monthly bills. Buy Awesome Dice Roller! once and it's yours to keep — forever.</p>
+  <div class="price-tag">One-Time Purchase • No Subscription</div>
+</section>
+
+<section class="faq">
+  <h2>Frequently Asked Questions</h2>
+  <p class="lead">Quick answers to the questions we hear most often.</p>
+
+  <div class="faq-item">
+    <h3>What dice can I roll?</h3>
+    <p>Awesome Dice Roller! supports the standard polyhedral set: d4, d6, d8, d10, d12, and d20. You can roll up to 10 dice in a single throw.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Is there a subscription or in-app purchases?</h3>
+    <p>Nope. Awesome Dice Roller! is a one-time purchase. No subscriptions, no ads, no surprise fees. Updates are included.</p>
+  </div>
+  <div class="faq-item">
+    <h3>How do I roll the dice?</h3>
+    <p>Two ways — give your device a shake to roll like the real thing, or tap the screen for a quieter throw.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Can I customize dice colors?</h3>
+    <p>Yes! Every die can be customized to the color of your choice, letting you build a personalized set that looks exactly right.</p>
+  </div>
+  <div class="faq-item">
+    <h3>Does the app keep a history of my rolls?</h3>
+    <p>It sure does. Your recent throws are saved so you can review them anytime — handy for settling disputes or reliving your best rolls.</p>
+  </div>
+  <div class="faq-item">
+    <h3>What devices does it work on?</h3>
+    <p>Awesome Dice Roller! is available on iPhone and iPad through the App Store.</p>
+  </div>
+  <div class="faq-item">
+    <h3>I'm having a problem with the app. What should I do?</h3>
+    <p>Reach out using the support email below — we read every message and aim to respond quickly.</p>
+  </div>
+</section>
+
+<section class="support" id="support">
+  <h2>Need a Hand?</h2>
+  <p class="lead">We're a small team and we genuinely love hearing from players. Whether it's a bug, a feature idea, or just to say hi — get in touch.</p>
+
+  <div class="support-card">
+    <h3>Contact Support</h3>
+    <p>Send us an email and we'll get back to you as soon as we can.</p>
+    <a href="mailto:cedric.franz+fredangle@gmail.com" class="email-link">cedric.franz+fredangle@gmail.com</a>
+    <p class="response-note">We typically respond within 1–2 business days.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="#support">Support</a>
+    <a href="mailto:cedric.franz+fredangle@gmail.com">Contact</a>
+  </div>
+  <p>&copy; 2026 Awesome Dice Roller! — All rights reserved.</p>
+</footer>
+
+</body>
+</html>
